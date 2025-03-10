@@ -3,12 +3,88 @@
 #include <cmath>
 #include "Admin.h"
 #include "User.h"
+#include "RegularUser.h"
+
+#include <algorithm>
 using namespace std;
 
+const int MAX_USERS = 100;
+User* users[MAX_USERS] = {nullptr};
+int userCount = 0;
 Admin* currentAdmin = nullptr;
 
 
-#pragma region функции-заглушки
+#pragma region Новые функции для управления пользователями
+int addUser() {
+    if(userCount >= MAX_USERS) {
+        cout << "Ошибка: достигнуто максимальное количество пользователей!\n\n";
+        return -1;
+    }
+    
+    RegularUser* newUser = new RegularUser();
+    cin >> *newUser;
+    newUser->setId(userCount + 1);
+    users[userCount++] = newUser;
+    
+    cout << "Пользователь успешно добавлен!\n\n";
+    return 4;
+}
+
+int displayUsers() {
+    if(userCount == 0) {
+        cout << "Список пользователей пуст!\n\n";
+        return -1;
+    }
+    
+    cout << "\n=== Список пользователей ===" << endl;
+    for(int i = 0; i < userCount; ++i) {
+        users[i]->displayInfo();
+        cout << "-------------------------" << endl;
+    }
+    return 5;
+}
+
+int sortUsers() {
+    if(userCount < 2) {
+        cout << "Недостаточно пользователей для сортировки!\n\n";
+        return -1;
+    }
+    
+    sort(users, users + userCount, [](User* a, User* b) {
+        return *a < *b;
+    });
+    
+    cout << "Пользователи отсортированы по фамилии!\n\n";
+    return 6;
+}
+
+int deleteUser() {
+    if(userCount == 0) {
+        cout << "Список пользователей пуст!\n\n";
+        return -1;
+    }
+    
+    int index;
+    cout << "Введите индекс пользователя для удаления (1-" << userCount << "): ";
+    cin >> index;
+    
+    if(index < 1 || index > userCount) {
+        cout << "Неверный индекс!\n\n";
+        return -1;
+    }
+    
+    delete users[index-1];
+    for(int i = index-1; i < userCount-1; ++i) {
+        users[i] = users[i+1];
+    }
+    userCount--;
+    
+    cout << "Пользователь успешно удален!\n\n";
+    return 7;
+}
+#pragma endregion
+
+#pragma region Функции меню
 int printHello() {
     string name;
     std::cout << "Введите имя: ";
