@@ -1,0 +1,3 @@
+/home/h1nezo/Desktop/TestMenu/build/CMakeFiles/MusicCollectionSystem.dir
+/home/h1nezo/Desktop/TestMenu/build/CMakeFiles/edit_cache.dir
+/home/h1nezo/Desktop/TestMenu/build/CMakeFiles/rebuild_cache.dir
